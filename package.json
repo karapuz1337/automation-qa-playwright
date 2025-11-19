@@ -1,0 +1,38 @@
+{
+  "name": "automation-qa-playwright",
+  "version": "1.0.0",
+  "description": "Repo for auto-testing using the Playwright framework and JavaScript language",
+  "homepage": "https://github.com/karapuz1337/automation-qa-playwright#readme",
+  "bugs": {
+    "url": "https://github.com/karapuz1337/automation-qa-playwright/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karapuz1337/automation-qa-playwright.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:check": "eslint . --max-warnings 0",
+    "test": "npm run test:pw",
+    "test:pw": "playwright test",
+    "test:pw:headed": "playwright test --headed",
+    "test:pw:debug": "playwright test --debug",
+    "test:pw:ui": "playwright test --ui",
+    "test:pw:report": "playwright show-report",
+    "test:ci": "playwright test --reporter=line"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7"
+  }
+}
