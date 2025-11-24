@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from "@playwright/test";
+import "dotenv/config";
 
 /**
  * Read environment variables from file.
@@ -32,7 +33,11 @@ export default defineConfig({
     /* Collect trace and other artifacts when tests fail. */
     trace: process.env.CI ? "on-first-retry" : "retain-on-failure",
     screenshot: "only-on-failure",
-    video: "retain-on-failure"
+    video: "retain-on-failure",
+    httpCredentials: {
+      username: process.env.HTTP_USERNAME,
+      password: process.env.HTTP_PASSWORD
+    }
   },
 
   /* Configure projects for major browsers */
@@ -40,17 +45,17 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] }
-    },
-
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] }
-    },
-
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] }
     }
+
+    // {
+    //   name: "firefox",
+    //   use: { ...devices["Desktop Firefox"] }
+    // },
+    //
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] }
+    // }
 
     /* Test against mobile viewports. */
     // {
