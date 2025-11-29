@@ -1,57 +1,53 @@
 import { test, expect } from "@playwright/test";
 import colors from "../../src/colors.json" with { type: "json" };
 import cases from "../../src/fixtures/registrationForm/nameField.json" with { type: "json" };
+import MainPage from "../../src/pageObjects/main/MainPage.js";
 
 test.describe("Registration form - Name field", () => {
-
-  test.beforeEach(async({ page }) => {
-    await page.goto("/");
-    await page.getByRole("button", { name: "Sign up" }).click();
-  });
 
   for (const c of cases) {
     test(c.title, async({ page }) => {
 
-      // Get the "Sign Up" form
-      const modal = page.getByRole("dialog");
+      // BEFORE EACH HOOK INSIDE THE LOOP
+      const mainPage = new MainPage(page);
 
-      // Get the Name field
-      const nameField = modal.locator("#signupName");
-      await expect(nameField).toBeVisible();
-      await expect(nameField).toBeEnabled();
+      await mainPage.navigate();
+      const signUpForm = await mainPage.openSignUpForm();
+
+      await expect(signUpForm.nameField).toBeVisible();
+      await expect(signUpForm.nameField).toBeEnabled();
 
 
       // Handle empty input (the text field has to be 'touched' to display an error)
       const input = c.input.name;
       const isEmpty = input === "" || input === undefined || input === null;
       if (isEmpty) {
-        await nameField.fill("x");
-        await nameField.clear();
-        await nameField.blur();
+        await signUpForm.nameField.fill("x");
+        await signUpForm.nameField.clear();
+        await signUpForm.nameField.blur();
       }
       else {
         // Fill the Name field
-        await nameField.fill(input);
-        await nameField.blur();
+        await signUpForm.fillNameField(input);
       }
 
 
       // Assert the Name field
       const negative = Boolean(c.expected && c.expected.length);
-      const errorLocator = modal.locator("#signupName + .invalid-feedback");
+      const errorLocator = signUpForm.container.locator("#signupName + .invalid-feedback");
 
       if (negative) {
-        await expect(nameField).toContainClass("is-invalid");
+        await expect(signUpForm.nameField).toContainClass("is-invalid");
         await expect(errorLocator).toBeVisible();
         await expect(errorLocator).toHaveText(c.expected);
       }
       else {
-        await expect(nameField).not.toContainClass("is-invalid");
+        await expect(signUpForm.nameField).not.toContainClass("is-invalid");
         await expect(errorLocator).toHaveCount(0);
       }
 
       const color = (colors.borders || colors)[c.borderColor];
-      await expect(nameField).toHaveCSS("border-top-color", color);
+      await expect(signUpForm.nameField).toHaveCSS("border-top-color", color);
 
     });
   }

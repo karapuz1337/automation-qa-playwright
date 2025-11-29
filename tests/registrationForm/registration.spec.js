@@ -1,62 +1,26 @@
 import { test, expect } from "@playwright/test";
 import { generateUserData } from "../../src/helpers/generateUserData.js";
+import MainPage from "../../src/pageObjects/main/MainPage.js";
 
 test.describe("Registration form", () => {
 
+  let signUpForm;
   let isValidTest;
   let userData;
   test.beforeEach(async({ page }) => {
     isValidTest = false;
     userData = generateUserData();
 
-    await page.goto("/");
-    await page.getByRole("button", { name: "Sign up" }).click();
+    const mainPage = new MainPage(page);
+    await mainPage.navigate();
+    signUpForm = await mainPage.openSignUpForm();
   });
 
   test("Should register a user with valid credentials", async({ page }) => {
 
-    // Check the Register button state after each input
-    const registerBtn = page.getByRole("button", { name: "Register" });
+    await signUpForm.fillAndSubmit(userData);
 
-    await expect(registerBtn).toBeVisible();
-    await expect(registerBtn).toBeDisabled();
-
-    // Fill the Name field
-    await page.locator("#signupName").fill(userData.name);
-
-    await expect(registerBtn).toBeVisible();
-    await expect(registerBtn).toBeDisabled();
-
-    // Fill the Last Name field
-    await page.locator("#signupLastName").fill(userData.lastName);
-
-    await expect(registerBtn).toBeVisible();
-    await expect(registerBtn).toBeDisabled();
-
-    // Fill the Email field
-    await page.locator("#signupEmail").fill(userData.email);
-
-    await expect(registerBtn).toBeVisible();
-    await expect(registerBtn).toBeDisabled();
-
-    // Fill the Password field
-    await page.locator("#signupPassword").fill(userData.password);
-
-    await expect(registerBtn).toBeVisible();
-    await expect(registerBtn).toBeDisabled();
-
-    // Fill the Re-enter password field
-    await page.locator("#signupRepeatPassword").fill(userData.repeatPassword);
-
-    await expect(registerBtn).toBeVisible();
-    await expect(registerBtn).toBeEnabled();
-
-    // Click the Register button
-    await registerBtn.click();
-
-    // Check that the correct page is opened
-    await expect(page).toHaveURL("/panel/garage");
-
+    // Set the flag to true to indicate that the user was created
     isValidTest = true;
 
     // Check that the Add car button is available
