@@ -4,7 +4,9 @@ import BaseComponent from "../../BaseComponent.js";
 export default class SignUpForm extends BaseComponent {
   constructor(page) {
     super(page);
-    this.container = page.locator(".modal-content");
+    this.container = this.page
+      .getByRole("dialog")
+      .locator(".modal-content");
     this.nameField = this.container.locator("#signupName");
     this.lastNameField = this.container.locator("#signupLastName");
     this.emailField = this.container.locator("#signupEmail");

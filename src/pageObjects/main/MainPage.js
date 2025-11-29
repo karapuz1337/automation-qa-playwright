@@ -6,7 +6,7 @@ import SignUpForm from "./components/SignUpForm.js";
 export default class MainPage extends BasePage {
   constructor(page) {
     super(page, "/");
-    this.signUpBtn = page.getByText("Sign up");
+    this.signUpBtn = page.getByRole("button", { name: "Sign up" });
   }
 
   async openSignUpForm(){

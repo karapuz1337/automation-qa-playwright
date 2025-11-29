@@ -8,7 +8,6 @@ test.describe("Registration form - Re-enter password field", () => {
   for (const c of cases) {
     test(c.title, async({ page }) => {
 
-      // BEFORE EACH HOOK INSIDE THE LOOP
       const mainPage = new MainPage(page);
 
       await mainPage.navigate();
