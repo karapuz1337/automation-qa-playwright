@@ -31,6 +31,7 @@ test.describe("Registration form", () => {
     // Submit the form
     await signUpForm.submit();
 
+    // Check that the user is redirected to the Garage page
     await expect(page).toHaveURL("/panel/garage");
 
     // Set the flag to true to indicate that the user was created
