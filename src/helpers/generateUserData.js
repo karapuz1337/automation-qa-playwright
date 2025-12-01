@@ -18,6 +18,6 @@ export const generateUserData = () => {
     lastName: faker.person.lastName().replace(/[^a-zA-Z]/g, ""),
     email,
     password,
-    repeatPassword: password
+    reEnterPassword: password
   };
 };
