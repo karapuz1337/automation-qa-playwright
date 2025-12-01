@@ -18,7 +18,20 @@ test.describe("Registration form", () => {
 
   test("Should register a user with valid credentials", async({ page }) => {
 
-    await signUpForm.fillAndSubmit(userData);
+    // Check that the Register button is disabled
+    await expect(signUpForm.registerBtn).toBeVisible();
+    await expect(signUpForm.registerBtn).toBeDisabled();
+
+    // Fill the form
+    await signUpForm.fill(userData);
+
+    // Check that the Register button is enabled
+    await expect(signUpForm.registerBtn).toBeEnabled();
+
+    // Submit the form
+    await signUpForm.submit();
+
+    await expect(page).toHaveURL("/panel/garage");
 
     // Set the flag to true to indicate that the user was created
     isValidTest = true;
