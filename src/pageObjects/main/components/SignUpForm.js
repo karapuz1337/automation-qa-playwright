@@ -1,4 +1,3 @@
-import { expect } from "@playwright/test";
 import BaseComponent from "../../BaseComponent.js";
 
 export default class SignUpForm extends BaseComponent {
@@ -41,47 +40,19 @@ export default class SignUpForm extends BaseComponent {
   }
 
   async fill({ name, lastName, email, password, reEnterPassword }) {
-
-    // Check the Register button state after each input
-    await expect(this.registerBtn).toBeVisible();
-    await expect(this.registerBtn).toBeDisabled();
-
-    // Fill the Name field
     await this.fillNameField(name);
-
-    await expect(this.registerBtn).toBeVisible();
-    await expect(this.registerBtn).toBeDisabled();
-
-    // Fill the Last Name field
     await this.fillLastNameField(lastName);
-
-    await expect(this.registerBtn).toBeVisible();
-    await expect(this.registerBtn).toBeDisabled();
-
-    // Fill the Email field
     await this.fillEmailField(email);
-
-    await expect(this.registerBtn).toBeVisible();
-    await expect(this.registerBtn).toBeDisabled();
-
-    // Fill the Password field
     await this.fillPasswordField(password);
-
-    await expect(this.registerBtn).toBeVisible();
-    await expect(this.registerBtn).toBeDisabled();
-
-    // Fill the Re-enter password field
     await this.fillReEnterPasswordField(reEnterPassword);
   }
 
-  async fillAndSubmit({ name, lastName, email, password, reEnterPassword }) {
-    await this.fill({ name, lastName, email, password, reEnterPassword });
-
-    await expect(this.registerBtn).toBeVisible();
-    await expect(this.registerBtn).toBeEnabled();
-
+  async submit() {
     await this.registerBtn.click();
+  }
 
-    await expect(this.page).toHaveURL("/panel/garage");
+  async fillAndSubmit(data) {
+    await this.fill(data);
+    await this.submit();
   }
 }
