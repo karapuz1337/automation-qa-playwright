@@ -32,37 +32,49 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: "setup",
+      testMatch: "tests/setup/*.setup.js",
+      use: { ...devices["Desktop Chrome"] }
+    },
+    {
       name: "chromium",
+      dependencies: ["setup"],
       use: { ...devices["Desktop Chrome"] }
     }
 
     // {
     //   name: "firefox",
+    //   dependencies: ["setup"],
     //   use: { ...devices["Desktop Firefox"] }
     // },
     //
     // {
     //   name: "webkit",
+    //   dependencies: ["setup"],
     //   use: { ...devices["Desktop Safari"] }
     // }
 
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
+    //   dependencies: ["setup"],
     //   use: { ...devices['Pixel 5'] },
     // },
     // {
     //   name: 'Mobile Safari',
+    //   dependencies: ["setup"],
     //   use: { ...devices['iPhone 12'] },
     // },
 
     /* Test against branded browsers. */
     // {
     //   name: 'Microsoft Edge',
+    //   dependencies: ["setup"],
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
     // },
     // {
     //   name: 'Google Chrome',
+    //   dependencies: ["setup"],
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ]
