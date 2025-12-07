@@ -1,4 +1,5 @@
 import baseCustomFixture from "./baseCustomFixture.js";
+import GaragePage from "../../pageObjects/garage/GaragePage.js";
 
 export const withUserTest = baseCustomFixture.extend({
   page: async({ browser }, use) => {
@@ -10,8 +11,9 @@ export const withUserTest = baseCustomFixture.extend({
   },
 
   userGaragePage: async({ page }, use) => {
-    await page.goto("/panel/garage");
-    await use(page);
+    const garagePage = new GaragePage(page);
+    await garagePage.navigate();
+    await use(garagePage);
   }
 });
 
