@@ -7,7 +7,8 @@ export const withUserTest = baseCustomFixture.extend({
       storageState: "states/auth/user.json"
     });
     const page = await ctx.newPage();
-    await use (page);
+    await use(page);
+    await ctx.close();
   },
 
   userGaragePage: async({ page }, use) => {
