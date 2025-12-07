@@ -49,7 +49,7 @@ test.describe("Registration form", () => {
   test.afterEach(async({ page }) => {
     // Delete the user (if it was created)
     if (isValidTest) {
-      garagePage.navigate();
+      await garagePage.navigate();
 
       // Click the Settings button
       await page.getByRole("link", { name: "Settings" }).click();
