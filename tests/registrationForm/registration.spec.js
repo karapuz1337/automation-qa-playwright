@@ -1,12 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { generateUserData } from "../../src/helpers/generateUserData.js";
 import MainPage from "../../src/pageObjects/main/MainPage.js";
+import GaragePage from "../../src/pageObjects/garage/GaragePage.js";
 
 test.describe("Registration form", () => {
 
   let signUpForm;
   let isValidTest;
   let userData;
+  let garagePage;
   test.beforeEach(async({ page }) => {
     isValidTest = false;
     userData = generateUserData();
@@ -14,6 +16,8 @@ test.describe("Registration form", () => {
     const mainPage = new MainPage(page);
     await mainPage.navigate();
     signUpForm = await mainPage.openSignUpForm();
+
+    garagePage = new GaragePage(page);
   });
 
   test("Should register a user with valid credentials", async({ page }) => {
@@ -38,15 +42,14 @@ test.describe("Registration form", () => {
     isValidTest = true;
 
     // Check that the Add car button is available
-    const addCarBtn = page.getByRole("button", { name: "Add car" });
-    await expect(addCarBtn).toBeVisible();
-    await expect(addCarBtn).toBeEnabled();
+    await expect(garagePage.addCarBtn).toBeVisible();
+    await expect(garagePage.addCarBtn).toBeEnabled();
   });
 
   test.afterEach(async({ page }) => {
     // Delete the user (if it was created)
     if (isValidTest) {
-      await page.goto("/panel/garage");
+      await garagePage.navigate();
 
       // Click the Settings button
       await page.getByRole("link", { name: "Settings" }).click();

@@ -1,3 +1,5 @@
+#!/bin/sh
+set +e  # Don't exit on error - we handle errors manually
 echo "🔍 Running pre-commit checks..."
 
 # Get staged JavaScript files
@@ -15,13 +17,33 @@ echo ""
 # Run ESLint on staged files
 echo "🔍 Running ESLint..."
 echo "$STAGED_FILES" | xargs npx eslint --max-warnings 0 --no-warn-ignored
+ESLINT_EXIT_CODE=$?
 
 # Check if ESLint passed
-if [ $? -ne 0 ]; then
+if [ $ESLINT_EXIT_CODE -ne 0 ]; then
   echo ""
-  echo "❌ ESLint failed. Please fix the issues before committing."
-  echo "💡 Run 'npm run lint:fix' to auto-fix some issues."
-  exit 1
+  echo "⚠️ ESLint found issues. Attempting to auto-fix..."
+  echo "💡 Running 'npm run lint:fix'..."
+
+  npm run lint:fix
+
+  echo "📦 Re-staging fixed files..."
+  git add -u
+
+  # Run ESLint again to check if all issues are fixed
+  echo "🔍 Re-checking ESLint..."
+  echo "$STAGED_FILES" | xargs npx eslint --max-warnings 0 --no-warn-ignored
+  ESLINT_RECHECK_CODE=$?
+
+  if [ $ESLINT_RECHECK_CODE -ne 0 ]; then
+    echo ""
+    echo "❌ ESLint still has issues that cannot be auto-fixed. Please fix them manually."
+    exit 1
+  fi
+
+  echo ""
+  echo "✅ ESLint issues auto-fixed and files re-staged!"
+  exit 0
 fi
 
 echo ""
