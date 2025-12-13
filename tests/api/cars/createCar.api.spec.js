@@ -1,11 +1,13 @@
 import { withUserTest, expect } from "../../../src/fixtures/customFixtures/userFixture.js";
 import CreateCarDTOFactory from "../../../src/domain/cars/factory/CreateCarDTOFactory.js";
+import { test } from "@playwright/test";
+import ApiClient from "../../../src/clients/ApiClient.js";
 
 withUserTest.describe("API - POST /cars", () => {
+  // Test data
+  const carData = CreateCarDTOFactory.AudiR8(10000).extract();
 
   withUserTest("Should create a car with valid data", async({ apiClient }) => {
-    // Test data
-    const carData = CreateCarDTOFactory.AudiR8(10000).extract();
 
     await withUserTest.step("Create a car", async() => {
       const response = await apiClient.cars.createCar(carData);
@@ -22,4 +24,36 @@ withUserTest.describe("API - POST /cars", () => {
     });
 
   });
+
+  test("Should return 401 for unauthenticated user", async({ request }) => {
+
+    await test.step("Attempt to create a car with an unauthenticated user", async() => {
+      const apiClient = new ApiClient(request);
+      const response = await apiClient.cars.createCar(carData);
+      await expect(response.status(), "Check status code").toBe(401);
+
+      const json = await response.json();
+      await expect(json.status, "Check status in the response body").toBe("error");
+      await expect(json.message, "Check error message").toBe("Not authenticated");
+    });
+
+  });
+
+  withUserTest("Should return 400 for missing mileage", async({ apiClient }) => {
+    await withUserTest.step("Attempt to create a car with missing mileage", async() => {
+      const carData = CreateCarDTOFactory.empty().
+        setBrandId(1).
+        setModelId(2).
+        extract();
+
+      const response = await apiClient.cars.createCar(carData);
+      await expect(response.status(), "Check status code").toBe(400);
+
+      const json = await response.json();
+      await expect(json.status, "Check status in the response body").toBe("error");
+      await expect(json.message, "Check error message").toBe("Invalid mileage type");
+    });
+  });
+
+
 });
