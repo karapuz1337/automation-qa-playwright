@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { generateUserData } from "../../src/helpers/generateUserData.js";
 import MainPage from "../../src/pageObjects/main/MainPage.js";
-import GaragePage from "../../src/pageObjects/garage/GaragePage.js";
+import GaragePage from "../../src/pageObjects/panel/garage/GaragePage.js";
 
 test.describe("Registration form", () => {
 
