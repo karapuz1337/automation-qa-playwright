@@ -1,5 +1,5 @@
 import baseCustomFixture from "./baseCustomFixture.js";
-import GaragePage from "../../pageObjects/garage/GaragePage.js";
+import GaragePage from "../../pageObjects/panel/garage/GaragePage.js";
 import { request as pwRequest, expect as baseExpect } from "@playwright/test";
 import ApiClient from "../../clients/ApiClient.js";
 

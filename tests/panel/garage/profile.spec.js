@@ -1,4 +1,4 @@
-import { withUserTest, expect } from "../../src/fixtures/customFixtures/userFixture.js";
+import { withUserTest, expect } from "../../../src/fixtures/customFixtures/userFixture.js";
 
 withUserTest.describe("Profile page", () => {
 
