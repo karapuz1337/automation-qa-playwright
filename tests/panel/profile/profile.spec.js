@@ -8,7 +8,7 @@ withUserTest.describe("Profile page", () => {
     const testLastName = "LastNameTest";
 
     await withUserTest.step("Intercept and change a GET request", async() => {
-      await page.route("api/users/profile", async(route) => {
+      await page.route("**/api/users/profile", async(route) => {
         // Fetch the response
         const response = await route.fetch();
         const json = await response.json();
