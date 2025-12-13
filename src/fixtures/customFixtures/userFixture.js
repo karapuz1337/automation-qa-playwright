@@ -19,7 +19,8 @@ export const withUserTest = baseCustomFixture.extend({
     await use(garagePage);
   },
 
-  request: async(use) => {
+  // eslint-disable-next-line no-empty-pattern
+  request: async({}, use) => {
     const ctx = await pwRequest.newContext({
       storageState: "states/auth/user.json"
     });
