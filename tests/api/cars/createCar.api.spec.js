@@ -4,10 +4,10 @@ import { test } from "@playwright/test";
 import ApiClient from "../../../src/clients/ApiClient.js";
 
 withUserTest.describe("API - POST /cars", () => {
-  // Test data
-  const carData = CreateCarDTOFactory.AudiR8(10000).extract();
 
   withUserTest("Should create a car with valid data", async({ apiClient }) => {
+    // Test data
+    const carData = CreateCarDTOFactory.AudiR8(10000).extract();
 
     await withUserTest.step("Create a car", async() => {
       const response = await apiClient.cars.createCar(carData);
@@ -19,22 +19,24 @@ withUserTest.describe("API - POST /cars", () => {
       const response = await apiClient.cars.getCars();
       await expect(response, "Check status code").toBeOK();
       const json = await response.json();
-      await expect(json.data, "Check that only one car is created").toHaveLength(1);
-      await expect(json.data[0], "Check that the created car corresponds to the test data").toMatchObject(carData);
+      expect(json.data, "Check that only one car is created").toHaveLength(1);
+      expect(json.data[0], "Check that the created car corresponds to the test data").toMatchObject(carData);
     });
 
   });
 
   test("Should return 401 for unauthenticated user", async({ request }) => {
+    // Test data
+    const carData = CreateCarDTOFactory.FordMondeo(100).extract();
 
     await test.step("Attempt to create a car with an unauthenticated user", async() => {
       const apiClient = new ApiClient(request);
       const response = await apiClient.cars.createCar(carData);
-      await expect(response.status(), "Check status code").toBe(401);
+      expect(response.status(), "Check status code").toBe(401);
 
       const json = await response.json();
-      await expect(json.status, "Check status in the response body").toBe("error");
-      await expect(json.message, "Check error message").toBe("Not authenticated");
+      expect(json.status, "Check status in the response body").toBe("error");
+      expect(json.message, "Check error message").toBe("Not authenticated");
     });
 
   });
@@ -47,11 +49,11 @@ withUserTest.describe("API - POST /cars", () => {
         extract();
 
       const response = await apiClient.cars.createCar(carData);
-      await expect(response.status(), "Check status code").toBe(400);
+      expect(response.status(), "Check status code").toBe(400);
 
       const json = await response.json();
-      await expect(json.status, "Check status in the response body").toBe("error");
-      await expect(json.message, "Check error message").toBe("Invalid mileage type");
+      expect(json.status, "Check status in the response body").toBe("error");
+      expect(json.message, "Check error message").toBe("Invalid mileage type");
     });
   });
 
