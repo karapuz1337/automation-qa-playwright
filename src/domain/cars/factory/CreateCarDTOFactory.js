@@ -2,11 +2,7 @@ import CreateCarDTO from "../dto/CreateCarDTO.js";
 
 export default class CreateCarDTOFactory {
   static empty() {
-    return new CreateCarDTO({
-      carBrandId: null,
-      carModelId: null,
-      mileage: null
-    });
+    return new CreateCarDTO({});
   }
 
   static AudiR8(mileage = 0) {
