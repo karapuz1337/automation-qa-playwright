@@ -53,7 +53,7 @@ withUserTest.describe("API - POST /cars", () => {
 
       const json = await response.json();
       expect(json.status, "Check status in the response body").toBe("error");
-      expect(json.message, "Check error message").toBe("Invalid mileage type");
+      expect(json.message, "Check error message").toBe("Mileage is required");
     });
   });
 
