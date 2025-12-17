@@ -33,6 +33,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: report
+          name: test-report
           path: playwright-report/
           retention-days: 3
